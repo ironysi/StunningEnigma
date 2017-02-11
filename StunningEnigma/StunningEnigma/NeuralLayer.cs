@@ -96,6 +96,7 @@ namespace StunningEnigma
                     neuron.Synapses.Add(neuron.NetValue, synapses);
                 }
             }
+            neuron.IsBias = true;
             Neurons.Add(neuron);
         }
         #endregion

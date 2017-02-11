@@ -9,6 +9,7 @@ namespace StunningEnigma
         public double NetValue { get; set; }
         public double OutValue { get; set; }
         public double Error { get; set; }
+        public bool IsBias { get; set; } = false;
 
         public Neuron(double netValue)
         {
