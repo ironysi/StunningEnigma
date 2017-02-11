@@ -16,5 +16,12 @@ namespace StunningEnigma
             NetValue = netValue;
         }
 
+        public void ActivationFunction(double value)
+        {
+          OutValue =  ActivationFunctions.ReLU(value);
+        }
+
+
+
     }
 }

@@ -15,28 +15,59 @@ namespace StunningEnigma
             InputLayer = new NeuralLayer(inputs, hiddenNeuronsCount, true);
             HiddenLayer = new NeuralLayer(hiddenNeuronsCount, outputNeuronsCount, true);
             OutputLayer = new NeuralLayer(outputNeuronsCount);
+        }
 
+        public void Train()
+        {
             CalculateAllNetValues();
+            CalculateAllOutValues();
         }
 
         private void CalculateAllNetValues()
         {
-            for (int i = 0; i < HiddenLayer.Neurons.Count; i++)
+            CalcNetValuesForLayer(HiddenLayer, InputLayer);
+            CalcNetValuesForLayer(OutputLayer, HiddenLayer);
+        }
+
+        private void CalcNetValuesForLayer(NeuralLayer targetLayer, NeuralLayer previousLayer)
+        {
+            for (int i = 0; i < targetLayer.Neurons.Count; i++)
             {
-                Neuron neuron = HiddenLayer.Neurons[i];
+                Neuron neuron = targetLayer.Neurons[i];
                 double sum = 0;
 
-                if (neuron.IsBias == false)
+                if (!neuron.IsBias)
                 {
-                    for (int j = 0; j < InputLayer.Neurons.Count; j++)
+                    for (int j = 0; j < previousLayer.Neurons.Count; j++)
                     {
                         //gets synapse with index i of each input neuron j 
-                        double weight = InputLayer.Neurons[j].Synapses[InputLayer.Neurons[j].NetValue][i].Value;
-                        sum += weight * InputLayer.Neurons[j].NetValue;
+                        double weight = previousLayer.Neurons[j].Synapses[previousLayer.Neurons[j].NetValue][i].Value;
+                        sum += weight * previousLayer.Neurons[j].NetValue;
                     }
                 }
                 neuron.NetValue = sum;
             }
+        }
+
+        private void CalculateAllOutValues()
+        {
+            CalculateOutValuesForLayer(HiddenLayer);
+            CalculateOutValuesForLayer(OutputLayer);
+        }
+
+        private void CalculateOutValuesForLayer(NeuralLayer layer)
+        {
+            foreach (Neuron neuron in layer.Neurons)
+            {
+                neuron.ActivationFunction(neuron.NetValue);
+            }
+        }
+
+        private double TotalError()
+        {
+
+
+            return 0;
         }
 
     }
