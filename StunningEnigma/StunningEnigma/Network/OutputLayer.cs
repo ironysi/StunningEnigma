@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace StunningEnigma
+namespace StunningEnigma.Network
 {
     class OutputLayer : INeuralLayer
     {
         public bool BiasNeuron { get; set; }
         public List<INeuron> Neurons { get; set; }
 
-        public OutputLayer(int nrOfNeurons, bool biasNeuron, INeuralLayer previousLayer)
+        public OutputLayer(int nrOfNeurons, INeuralLayer previousLayer)
         {
+            this.BiasNeuron = false;
             InitializeNeurons(nrOfNeurons, previousLayer);
         }
 

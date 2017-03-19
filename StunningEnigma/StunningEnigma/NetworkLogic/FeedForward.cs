@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StunningEnigma.Network;
 
-namespace StunningEnigma
+namespace StunningEnigma.NetworkLogic
 {
     public static class FeedForward
     {
@@ -17,17 +14,9 @@ namespace StunningEnigma
 
         private static void FeedLayer(INeuralLayer layer)
         {
-            foreach (Neuron neuron in layer.Neurons)
+            foreach (INeuron neuron in layer.Neurons)
             {
-                double value = 0.0;
-
-                for (int i = 0; i < neuron.InputSynapses.Count; i++)
-                {
-                    value = value * neuron.InputSynapses[i].Weight;
-                }
-
-                neuron.NetValue = value;
-                neuron.Pulse();
+                neuron.ActivationFunction();
             }
         }
 

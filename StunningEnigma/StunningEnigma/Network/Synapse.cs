@@ -1,4 +1,4 @@
-﻿namespace StunningEnigma
+﻿namespace StunningEnigma.Network
 {
     public class Synapse
     {
@@ -13,7 +13,6 @@
         public INeuron OutputNeuron { get; set; }
 
         public double Weight { get; set; }
-        public double NewValue { get; set; }
         public double Delta { get; set; }
 
         public Synapse(double weight, INeuron inputNeuron, INeuron outputNeuron)
@@ -23,16 +22,5 @@
             OutputNeuron = outputNeuron;
         }
 
-        public Synapse(double weight, INeuron outputNeuron, bool isOutput) : this(weight, null, outputNeuron)
-        {
-        }
-        public Synapse(double weight, INeuron inputNeuron) : this(weight, inputNeuron, null)
-        {
-        }
-
-        public void ApplyChanges()
-        {
-            Weight = NewValue;
-        }
     }
 }

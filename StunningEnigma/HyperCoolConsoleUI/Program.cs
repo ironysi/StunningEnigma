@@ -1,5 +1,6 @@
 ﻿using DataSet;
 using StunningEnigma;
+using StunningEnigma.Network;
 
 namespace HyperCoolConsoleUI
 {
@@ -15,10 +16,8 @@ namespace HyperCoolConsoleUI
         {
             string[] categories = new string[] { "numeric", "numeric", "numeric", "numeric", "categorical" };
             Data data = new Data("Iris.txt", ',', 4, 3, 0.8, categories);
-            NeuralNet net = new NeuralNet(4,3,3);
-
-            net.Train(data.GetLearningInputs(), data.GetLearningOutputs());
-
+            NeuralNet net = new NeuralNet(3,3,2, data.GetLearningInputs());
+            
         }
     }
 }

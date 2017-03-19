@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace StunningEnigma
+namespace StunningEnigma.Network
 {
     class HiddenLayer:INeuralLayer
     {
@@ -16,10 +12,10 @@ namespace StunningEnigma
         {
             InitializeNeurons(nrOfNeurons, inputLayer);
            
-            ///TODO: BIAS
             if (biasNeuron)
             {
-                
+                BiasNeuron bias = new BiasNeuron(inputLayer.Neurons);
+                Neurons.Add(bias);
             }
         }
 

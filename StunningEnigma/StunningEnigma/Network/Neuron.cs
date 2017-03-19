@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MathNet.Numerics;
 
-
-namespace StunningEnigma
+namespace StunningEnigma.Network
 {
     public class Neuron : INeuron
     {
         public List<Synapse> InputSynapses { get; set; } = new List<Synapse>();
         public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
         public int NeuronId { get; set; }
-        public double NetValue { get; set; }
         public double OutValue { get; set; }
+        public double Gradient { get; set; }
         public double Error { get; set; }
 
-        public Neuron(double netValue)
+        public Neuron(double outValue)
         {
-            NetValue = netValue;
+            OutValue = outValue;
         }
-        public Neuron(double netValue, List<INeuron> inputNeurons):this(netValue)
+        public Neuron(double outValue, List<INeuron> inputNeurons) : this(outValue)
         {
             foreach (INeuron inputNeuron in inputNeurons)
             {
@@ -32,25 +30,33 @@ namespace StunningEnigma
             }
         }
 
-
-        /// <summary>
-        ///  Calculates OutputValue of neuron
-        /// </summary>
-        public void Pulse()
+        // Forward propagation
+        public void ActivationFunction()
         {
-            ActivationFunction(NetValue);
+            OutValue = Utilities.Sigmoid(InputSynapses.Sum(x => x.Weight * x.InputNeuron.OutValue));
         }
 
-        public void ActivationFunction(double value)
+
+        #region BackProp
+
+        public double CalculateGradient(double? target = null)
         {
-            OutValue = Utilities.Sigmoid(value);
+            if (target == null)
+                return Gradient = OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * Utilities.SigmoidDerivative(OutValue);
+
+            return Gradient = CalculateError(target.Value) * Utilities.SigmoidDerivative(OutValue);
         }
 
-        public void CalculateError(double targetValue)
+        public double CalculateError(double targetValue)
         {
             Error = 0.5 * Math.Pow((targetValue - OutValue), 2);
+
+            return Error;
         }
 
+
+        #endregion
+        
 
     }
 }
