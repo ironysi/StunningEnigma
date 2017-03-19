@@ -1,26 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MathNet.Numerics;
+
 
 namespace StunningEnigma
 {
     public class Neuron
     {
-        public Dictionary<double, List<Synapse>> Synapses { get; set; } =  new Dictionary<double, List<Synapse>>();
+        public List<Synapse> InputSynapses { get; set; } = new List<Synapse>();
+        public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
         public int NeuronId { get; set; }
         public double NetValue { get; set; }
         public double OutValue { get; set; }
         public double Error { get; set; }
-        public bool IsBias { get; set; } = false;
 
         public Neuron(double netValue)
         {
             NetValue = netValue;
         }
 
-        public void ActivationFunction(double value)
+        /// <summary>
+        ///  Calculates OutputValue of neuron
+        /// </summary>
+        public void Pulse()
         {
-          OutValue =  ActivationFunctions.ReLU(value);
+            ActivationFunction(NetValue);
         }
 
+        public void ActivationFunction(double value)
+        {
+            OutValue = Utilities.Sigmoid(value);
+        }
+
+        public void CalculateError(double targetValue)
+        {
+            Error = 0.5 * Math.Pow((targetValue - OutValue), 2);
+        }
 
 
     }

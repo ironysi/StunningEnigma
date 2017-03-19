@@ -2,8 +2,14 @@
 
 namespace StunningEnigma
 {
-    public static class ActivationFunctions
+    public static class Utilities
     {
+        //Step
+        public static double Step(double value)
+        {
+            return value >= 0.5 ? 1.0 : 0.0;
+        }
+
         //ReLU
         public static double ReLU(double value)
         {
@@ -17,11 +23,11 @@ namespace StunningEnigma
         //Sigmoid
         public static double Sigmoid(double value)
         {
-            return 1 / (1 + Math.Exp(-value));
+            return 1 / (1 + Math.Pow(Math.E, -value));
         }
         public static double SigmoidDerivative(double value)
         {
-            return value * (1.0F - value);
+            return Sigmoid(value) * (1.0D - Sigmoid(value));
         }
         //TANH
         public static double TanH(double value)
@@ -44,7 +50,13 @@ namespace StunningEnigma
         /// </summary>
         public static double DoubleBetween(double min, double max)
         {
-            Random rnd = new Random(1);
+            Random rnd = new Random();
+            return rnd.NextDouble() * (max - min) + min;
+        }
+
+        public static double DoubleBetween(double min, double max, int seed)
+        {
+            Random rnd = new Random(seed);
             return rnd.NextDouble() * (max - min) + min;
         }
         
