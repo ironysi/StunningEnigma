@@ -9,7 +9,7 @@ namespace StunningEnigma
     public interface INeuralLayer
     {
         bool BiasNeuron { get; set; }
-        List<Neuron> Neurons { get; set; }
+        List<INeuron> Neurons { get; set; }
 
     }
 }

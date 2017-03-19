@@ -9,13 +9,12 @@ namespace StunningEnigma
     class HiddenLayer:INeuralLayer
     {
         public bool BiasNeuron { get; set; }
-        public List<Neuron> Neurons { get; set; }
+        public List<INeuron> Neurons { get; set; }
 
 
-        public HiddenLayer(int nrOfNeurons, bool biasNeuron, int nrOfInputNeurons, int nrOfOutputNeurons)
+        public HiddenLayer(int nrOfNeurons, bool biasNeuron, INeuralLayer inputLayer)
         {
-            InitializeNeurons(nrOfNeurons);
-            InitializeWeights(nrOfInputNeurons, nrOfOutputNeurons);
+            InitializeNeurons(nrOfNeurons, inputLayer);
            
             ///TODO: BIAS
             if (biasNeuron)
@@ -24,31 +23,13 @@ namespace StunningEnigma
             }
         }
 
-        private void InitializeNeurons(int nrOfNeurons)
+        private void InitializeNeurons(int nrOfNeurons, INeuralLayer inputLayer)
         {
             for (int i = 0; i < nrOfNeurons; i++)
             {
-                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1));
+                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1), inputLayer.Neurons);
                 Neurons.Add(neuron);
             }
-        }
-
-        private void InitializeWeights(int nrOfInputNeurons, int nrOfOutputNeurons)
-        {
-            foreach (Neuron neuron in Neurons)
-            {
-                for (int i = 0; i < nrOfInputNeurons; i++)
-                {
-                    Synapse synapse = new Synapse(Utilities.DoubleBetween(0,1));
-                    neuron.InputSynapses.Add(synapse);
-                }
-
-                for (int i = 0; i < nrOfOutputNeurons; i++)
-                {
-                    Synapse synapse = new Synapse(Utilities.DoubleBetween(0, 1));
-                    neuron.OutputSynapses.Add(synapse);
-                }
-            }   
         }
 
     }

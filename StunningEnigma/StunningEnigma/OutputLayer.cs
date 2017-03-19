@@ -6,37 +6,25 @@ using System.Threading.Tasks;
 
 namespace StunningEnigma
 {
-    class OutputLayer:INeuralLayer
+    class OutputLayer : INeuralLayer
     {
         public bool BiasNeuron { get; set; }
-        public List<Neuron> Neurons { get; set; }
+        public List<INeuron> Neurons { get; set; }
 
-        public OutputLayer(int nrOfNeurons, bool biasNeuron, int nrOfHiddenNeurons)
+        public OutputLayer(int nrOfNeurons, bool biasNeuron, INeuralLayer previousLayer)
         {
-            InitializeNeurons(nrOfNeurons);
-            InitializeWeights(nrOfHiddenNeurons);
+            InitializeNeurons(nrOfNeurons, previousLayer);
         }
 
-        private void InitializeNeurons(int nrOfNeurons)
+        private void InitializeNeurons(int nrOfNeurons, INeuralLayer previousLayer)
         {
             for (int i = 0; i < nrOfNeurons; i++)
             {
-                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1));
+                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1), previousLayer.Neurons);
                 Neurons.Add(neuron);
             }
         }
 
-        private void InitializeWeights(int nrOfHiddenNeurons)
-        {
-            foreach (Neuron neuron in Neurons)
-            {
-                for (int i = 0; i < nrOfHiddenNeurons; i++)
-                {
-                    Synapse synapse = new Synapse(Utilities.DoubleBetween(0, 1));
-                    neuron.InputSynapses.Add(synapse);
-                }
-            }
-        }
 
     }
 }

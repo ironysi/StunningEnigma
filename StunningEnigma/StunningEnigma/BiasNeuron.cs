@@ -10,6 +10,7 @@ namespace StunningEnigma
     {
         public double OutValue { get; set; }
         public int NeuronId { get; set; }
+        public List<Synapse> OutputSynapses { get; set; }
 
         public void Pulse()
         {

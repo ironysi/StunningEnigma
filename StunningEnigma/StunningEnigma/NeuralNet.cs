@@ -14,9 +14,7 @@ namespace StunningEnigma
 
         public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount)
         {
-            InputLayer = new InputLayer(inputNeuronsCount, false, null, hiddenNeuronsCount);
-            HiddenLayer = new HiddenLayer(hiddenNeuronsCount, false, inputNeuronsCount, outputNeuronsCount);
-            OutputLayer = new OutputLayer(outputNeuronsCount,false,hiddenNeuronsCount);
+            InputLayer = new InputLayer(inputNeuronsCount, false, null);
 
             FeedForward.FeedForwardPropagation(this);
         }

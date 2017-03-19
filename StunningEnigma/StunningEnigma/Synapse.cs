@@ -12,18 +12,27 @@
         /// </summary>
         public INeuron OutputNeuron { get; set; }
 
-        public double Value { get; set; }
+        public double Weight { get; set; }
         public double NewValue { get; set; }
         public double Delta { get; set; }
 
-        public Synapse(double value)
+        public Synapse(double weight, INeuron inputNeuron, INeuron outputNeuron)
         {
-            Value = value;
+            Weight = weight;
+            InputNeuron = inputNeuron;
+            OutputNeuron = outputNeuron;
+        }
+
+        public Synapse(double weight, INeuron outputNeuron, bool isOutput) : this(weight, null, outputNeuron)
+        {
+        }
+        public Synapse(double weight, INeuron inputNeuron) : this(weight, inputNeuron, null)
+        {
         }
 
         public void ApplyChanges()
         {
-            Value = NewValue;
+            Weight = NewValue;
         }
     }
 }

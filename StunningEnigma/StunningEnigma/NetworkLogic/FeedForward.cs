@@ -23,7 +23,7 @@ namespace StunningEnigma
 
                 for (int i = 0; i < neuron.InputSynapses.Count; i++)
                 {
-                    value = value * neuron.InputSynapses[i].Value;
+                    value = value * neuron.InputSynapses[i].Weight;
                 }
 
                 neuron.NetValue = value;

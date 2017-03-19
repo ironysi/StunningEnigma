@@ -6,7 +6,7 @@ using MathNet.Numerics;
 
 namespace StunningEnigma
 {
-    public class Neuron
+    public class Neuron : INeuron
     {
         public List<Synapse> InputSynapses { get; set; } = new List<Synapse>();
         public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
@@ -19,6 +19,19 @@ namespace StunningEnigma
         {
             NetValue = netValue;
         }
+        public Neuron(double netValue, List<INeuron> inputNeurons):this(netValue)
+        {
+            foreach (INeuron inputNeuron in inputNeurons)
+            {
+                Synapse synapse = new Synapse(Utilities.DoubleBetween(0, 1), inputNeuron, this);
+
+                inputNeuron.OutputSynapses.Add(synapse); // creates output synapse for input neuron 
+                                                         // -->> therefore I never have to initialize output synapses
+
+                InputSynapses.Add(synapse); // creates input synapse for my neuron
+            }
+        }
+
 
         /// <summary>
         ///  Calculates OutputValue of neuron
