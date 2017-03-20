@@ -58,11 +58,11 @@ namespace StunningEnigma.Network
             for (int i = 0; i < OutputLayer.Neurons.Count; i++)
             {
                 e = targets[i] - OutputLayer.Neurons[i].OutValue;
-            //    Console.WriteLine("Neuron {0}: {1}\t\t target: {2}\t\t error: {3}", i, OutputLayer.Neurons[i].OutValue, targets[i], e);
+                Console.WriteLine("Neuron {0}: {1}\t\t target: {2}\t\t error: {3}", i, OutputLayer.Neurons[i].OutValue, targets[i], e);
             }
-         //   Console.WriteLine();
+            Console.WriteLine();
             return Math.Abs(e) / targets.Length;
-        }
+        } 
 
     }
 }

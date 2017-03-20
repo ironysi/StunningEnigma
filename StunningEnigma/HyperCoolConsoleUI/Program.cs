@@ -103,8 +103,8 @@ namespace HyperCoolConsoleUI
             // batchsize: 16 and LR: 0.1 
             NeuralNet net = new NeuralNet(4, 3, 3, data.GetLearningInputs(), data.GetLearningOutputs());
             net.BiasSize = 1;
-            net.LearningRate = 0.3;
-            net.Momentum = 0.9;
+            net.LearningRate = 0.1;
+            net.Momentum = 0.3;
             net.Train();
 
         }

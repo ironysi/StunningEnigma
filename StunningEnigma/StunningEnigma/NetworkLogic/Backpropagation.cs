@@ -22,7 +22,7 @@ namespace StunningEnigma.NetworkLogic
             foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
                 CalculateGradient(neuron);
-                PerformGradientCheck(neuron);
+               // PerformGradientCheck(neuron);
                 UpdateWeights(neuron, learningRate, momentum);
             }
         }
@@ -32,7 +32,7 @@ namespace StunningEnigma.NetworkLogic
             for (int i = 0; i < layer.Neurons.Count; i++)
             {
                 CalculateGradient((Neuron)layer.Neurons[i], outputs[i]);
-                PerformGradientCheck((Neuron)layer.Neurons[i]);
+           //     PerformGradientCheck((Neuron)layer.Neurons[i]);
                 UpdateWeights((Neuron)layer.Neurons[i], learningRate, momentum);
             }
         }
@@ -45,7 +45,7 @@ namespace StunningEnigma.NetworkLogic
             foreach (Synapse synapse in neuron.InputSynapses)
             {
                 previosError = synapse.Delta;
-                synapse.Delta = learningRate * neuron.Gradient * synapse.InputNeuron.OutValue; // calculate error particular synapse
+                synapse.Delta = learningRate * neuron.Gradient * synapse.InputNeuron.OutValue; // calculate error delta for particular synapse
                 synapse.Weight += synapse.Delta + momentum * previosError; // changes weight of that synapse based on error
             }
         }
@@ -55,9 +55,9 @@ namespace StunningEnigma.NetworkLogic
         private static void CalculateGradient(Neuron neuron, double? target = null)
         {
             if (target == null)
-                neuron.Gradient = neuron.OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * Utilities.SigmoidDerivative(neuron.OutValue);
+                neuron.Gradient = neuron.OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * Utilities.SigmoidDerivative(neuron.OutValue); //Hidden neurons
             else
-                neuron.Gradient = CalculateError(target.Value, neuron) * Utilities.SigmoidDerivative(neuron.OutValue);
+                neuron.Gradient = CalculateError(target.Value, neuron) * Utilities.SigmoidDerivative(neuron.OutValue); //output neurons
         }
 
         private static double CalculateError(double targetValue, Neuron neuron)
@@ -69,7 +69,7 @@ namespace StunningEnigma.NetworkLogic
 
         private static void PerformGradientCheck(Neuron neuron)
         {
-            double epsilon = 0.0001;
+            const double epsilon = 0.0001;
 
             double parameter1 =
                 Utilities.Sigmoid(neuron.InputSynapses.Sum(x => x.Weight * x.InputNeuron.OutValue) + epsilon);
