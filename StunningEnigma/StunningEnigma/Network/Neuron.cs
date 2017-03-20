@@ -11,6 +11,7 @@ namespace StunningEnigma.Network
         public int NeuronId { get; set; }
         public double OutValue { get; set; }
         public double Gradient { get; set; }
+        public double GradientCheck { get; set; }
         public double Error { get; set; }
 
 

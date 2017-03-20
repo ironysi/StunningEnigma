@@ -22,6 +22,7 @@ namespace StunningEnigma.NetworkLogic
             foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
                 CalculateGradient(neuron);
+                PerformGradientCheck(neuron);
                 UpdateWeights(neuron, learningRate, momentum);
             }
         }
@@ -31,6 +32,7 @@ namespace StunningEnigma.NetworkLogic
             for (int i = 0; i < layer.Neurons.Count; i++)
             {
                 CalculateGradient((Neuron)layer.Neurons[i], outputs[i]);
+                PerformGradientCheck((Neuron)layer.Neurons[i]);
                 UpdateWeights((Neuron)layer.Neurons[i], learningRate, momentum);
             }
         }
@@ -48,7 +50,7 @@ namespace StunningEnigma.NetworkLogic
             }
         }
 
-        #region Gradient
+        #region Gradient Descent 
 
         private static void CalculateGradient(Neuron neuron, double? target = null)
         {
@@ -65,6 +67,17 @@ namespace StunningEnigma.NetworkLogic
             return neuron.Error;
         }
 
+        private static void PerformGradientCheck(Neuron neuron)
+        {
+            double epsilon = 0.0001;
+
+            double parameter1 =
+                Utilities.Sigmoid(neuron.InputSynapses.Sum(x => x.Weight * x.InputNeuron.OutValue) + epsilon);
+            double parameter2 =
+                Utilities.Sigmoid(neuron.InputSynapses.Sum(x => x.Weight * x.InputNeuron.OutValue) - epsilon);
+
+            neuron.GradientCheck = (parameter1 - parameter2) / (2 * epsilon);
+        }
         #endregion
     }
 }
