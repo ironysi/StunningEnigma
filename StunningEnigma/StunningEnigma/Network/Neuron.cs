@@ -31,33 +31,10 @@ namespace StunningEnigma.Network
             }
         }
 
-        // Forward propagation
         public void ActivationFunction()
         {
             OutValue = Utilities.Sigmoid(InputSynapses.Sum(x => x.Weight * x.InputNeuron.OutValue));
         }
-
-
-        #region BackProp
-
-        //public double CalculateGradient(double? target = null)
-        //{
-        //    if (target == null)
-        //        return Gradient = OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * Utilities.SigmoidDerivative(OutValue);
-
-        //    return Gradient = CalculateError(target.Value) * Utilities.SigmoidDerivative(OutValue);
-        //}
-
-        //public double CalculateError(double targetValue)
-        //{
-        //    Error = 0.5 * Math.Pow((targetValue - OutValue), 2);
-
-        //    return Error;
-        //}
-
-
-        #endregion
-
 
     }
 }

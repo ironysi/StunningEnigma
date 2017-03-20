@@ -40,7 +40,7 @@ namespace HyperCoolConsoleUI
                         break;
                     case 5:
 
-                       // p.GridSearch(new int[] { 8, 16, 32, 64 }, new double[] { 0.1, 0.01, 0.001 });
+                        // p.GridSearch(new int[] { 8, 16, 32, 64 }, new double[] { 0.1, 0.01, 0.001 });
                         break;
                     case 6:
                         p.Test();
@@ -103,7 +103,7 @@ namespace HyperCoolConsoleUI
             // batchsize: 16 and LR: 0.1 
             NeuralNet net = new NeuralNet(4, 3, 3, data.GetLearningInputs(), data.GetLearningOutputs());
             net.BiasSize = 1;
-            net.LearningRate = 0.1;
+            net.LearningRate = 0.3;
             net.Momentum = 0.9;
             net.Train();
 
@@ -133,9 +133,21 @@ namespace HyperCoolConsoleUI
             string[] categories = { "numeric", "numeric", "numeric" };
             Data data = new Data("AND.txt", ',', 2, 1, 0.8, categories);
 
-            NeuralNet net = new NeuralNet(2, 2, 1, data.GetLearningInputs(), data.GetLearningOutputs());
+            double[][] input = new double[4][];
+            input[0] = new double[] { 0, 0 };
+            input[1] = new double[] { 1, 1 };
+            input[2] = new double[] { 1, 0 };
+            input[3] = new double[] { 0, 1 };
+
+            double[][] output = new double[4][];
+            output[0] = new double[] { 1 };
+            output[1] = new double[] { 1 };
+            output[2] = new double[] { 0 };
+            output[3] = new double[] { 0 };
+
+            NeuralNet net = new NeuralNet(2, 2, 1, input, output);
             net.LearningRate = 0.1;
-            net.Momentum = 0.9;           
+            net.Momentum = 0.9;
             net.BiasSize = 5;
 
             net.Train();

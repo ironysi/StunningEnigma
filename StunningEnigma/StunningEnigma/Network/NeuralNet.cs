@@ -45,7 +45,7 @@ namespace StunningEnigma.Network
                 if (i % 1000 == 0)
                 {
                     Console.WriteLine(errors.Sum());
-                    
+
                 }
 
             }
