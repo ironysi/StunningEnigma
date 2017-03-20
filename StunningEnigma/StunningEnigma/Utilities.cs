@@ -1,9 +1,12 @@
 ﻿using System;
+using MathNet.Numerics.Random;
 
 namespace StunningEnigma
 {
     public static class Utilities
     {
+        private static readonly Random rnd = new CryptoRandomSource();
+
         //Step
         public static double Step(double value)
         {
@@ -49,14 +52,15 @@ namespace StunningEnigma
         /// Random double between two numbers
         /// </summary>
         public static double DoubleBetween(double min, double max)
-        {
-            Random rnd = new Random();
+        {           
             return rnd.NextDouble() * (max - min) + min;
         }
 
+        /// <summary>
+        /// OUTDATED
+        /// </summary>
         public static double DoubleBetween(double min, double max, int seed)
         {
-            Random rnd = new Random(seed);
             return rnd.NextDouble() * (max - min) + min;
         }
         

@@ -14,6 +14,5 @@ namespace StunningEnigma
         int NeuronId { get; set; }
 
         List<Synapse> OutputSynapses { get; set; }
-
     }
 }

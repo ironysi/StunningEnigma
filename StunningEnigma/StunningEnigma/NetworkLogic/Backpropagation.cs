@@ -9,29 +9,42 @@ namespace StunningEnigma.NetworkLogic
 {
     public static class Backpropagation
     {
-        public static void BackProp(NeuralNet net)
+        public static void BackProp(NeuralNet net, double[] targetOutputs)
         {
-            
+            BackpropForOutputLayer(net.OutputLayer, targetOutputs, net.LearningRate, net.Momentum);
+            BackpropForHiddenLayer(net.HiddenLayer, net.LearningRate, net.Momentum);
         }
 
-        private static void BackpropForOutputLayer(INeuralLayer layer, double[] outputs)
+
+        private static void BackpropForHiddenLayer(INeuralLayer layer, double learningRate, double momentum)
         {
-            for (int i = 0; i < outputs.Length; i++)
+            //loops thru all neurons except BIAS 
+            foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
-                CalculateGradient(layer.Neurons[i], outputs[i]);
+                CalculateGradient(neuron);
+                UpdateWeights(neuron, learningRate, momentum);
             }
         }
 
-        private static void UpdateWeights(Neuron neuron,double learningRate , double momentum)
+        private static void BackpropForOutputLayer(INeuralLayer layer, double[] outputs, double learningRate, double momentum)
+        {
+            for (int i = 0; i < layer.Neurons.Count; i++)
+            {
+                CalculateGradient((Neuron)layer.Neurons[i], outputs[i]);
+                UpdateWeights((Neuron)layer.Neurons[i], learningRate, momentum);
+            }
+        }
+
+        private static void UpdateWeights(Neuron neuron, double learningRate, double momentum)
         {
             double previosError = neuron.Error;
             neuron.Error = learningRate * neuron.Gradient;
 
-            foreach (var synapse in neuron)
+            foreach (Synapse synapse in neuron.InputSynapses)
             {
-                previosError = synapse.WeightDelta;
-                synapse.WeightDelta = learnRate * Gradient * synapse.InputNeuron.Value;
-                synapse.Weight += synapse.WeightDelta + momentum * previosError;
+                previosError = synapse.Delta;
+                synapse.Delta = learningRate * neuron.Gradient * synapse.InputNeuron.OutValue; // calculate error particular synapse
+                synapse.Weight += synapse.Delta + momentum * previosError; // changes weight of that synapse based on error
             }
         }
 
@@ -47,7 +60,7 @@ namespace StunningEnigma.NetworkLogic
 
         private static double CalculateError(double targetValue, Neuron neuron)
         {
-            neuron.Error = 0.5 * Math.Pow((targetValue - neuron.OutValue), 2);
+            neuron.Error = targetValue - neuron.OutValue;
 
             return neuron.Error;
         }

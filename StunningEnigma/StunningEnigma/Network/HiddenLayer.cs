@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace StunningEnigma.Network
 {
     class HiddenLayer:INeuralLayer
     {
         public bool BiasNeuron { get; set; }
-        public List<INeuron> Neurons { get; set; }
+        public List<INeuron> Neurons { get; set; } = new List<INeuron>();
 
 
-        public HiddenLayer(int nrOfNeurons, bool biasNeuron, INeuralLayer inputLayer)
+        public HiddenLayer(int nrOfNeurons, bool biasNeuron, INeuralLayer inputLayer, double biasSize = 1)
         {
             InitializeNeurons(nrOfNeurons, inputLayer);
            
             if (biasNeuron)
             {
-                BiasNeuron bias = new BiasNeuron(inputLayer.Neurons);
+                BiasNeuron bias = new BiasNeuron(inputLayer.Neurons, biasSize);
                 Neurons.Add(bias);
             }
         }
@@ -23,6 +24,7 @@ namespace StunningEnigma.Network
         {
             for (int i = 0; i < nrOfNeurons; i++)
             {
+                
                 Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1), inputLayer.Neurons);
                 Neurons.Add(neuron);
             }
