@@ -14,55 +14,89 @@ namespace StunningEnigma.Network
         public double LearningRate { get; set; }
         public double BiasSize { get; set; }
 
-        private readonly double[][] inputs;
-        private readonly double[][] outputs;
-        private readonly double m;
+        public double[][] TrainingInputs { get; set; }
+        public double[][] TrainingOutputs { get; set; }
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, double[][] inputs, double[][] outputs)
+        public double[][] TestingInputs { get; set; }
+        public double[][] TestingOutputs { get; set; }
+
+        private int _batchSize;
+
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount)
         {
-            this.inputs = inputs;
-            this.outputs = outputs;
-            m = inputs.Length;
-
             InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
             HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, BiasSize);
             OutputLayer = new OutputLayer(outputNeuronsCount, HiddenLayer);
         }
 
-        public void Train()
+        public void Train(int batchSize)
         {
+            _batchSize = batchSize;
+            double[][] inputs = CreateBatch(TrainingInputs, batchSize);
+            double[][] outputs = CreateBatch(TrainingOutputs, batchSize);
+
             for (int i = 0; i < 10000; i++)
             {
-                List<double> errors = new List<double>();
-
-                for (int j = 0; j < m; j++)
+                for (int j = 0; j < batchSize; j++)
                 {
                     FeedForward.FeedForwardPropagation(this, inputs[j]);
                     Backpropagation.BackProp(this, outputs[j]);
-
-                    errors.Add(CalculateError(outputs[j]));
                 }
-                if (i % 1000 == 0)
-                {
-                    Console.WriteLine(errors.Sum());
-
-                }
-
             }
+        }
+
+        public void Test()
+        {
+            double m = TestingInputs.Length;
+
+            for (int j = 0; j < m; j++)
+            {
+                FeedForward.FeedForwardPropagation(this, TestingInputs[j]);
+                Backpropagation.BackProp(this, TestingOutputs[j]);
+
+                PrintOutputLayer(TestingOutputs[j], CalculateError(TestingOutputs[j]));
+            }
+            
             Console.ReadLine();
         }
+
+        private double[][] CreateBatch(double[][] data, int batchSize)
+        {
+            Random rnd = new Random();
+            double[][] returnData = new double[batchSize][];
+
+            for (int i = 0; i < batchSize; i++)
+            {
+                int randomNumber = rnd.Next(0, data.Length);
+                returnData[i] = data[randomNumber];
+            }
+
+            return returnData;
+        }
+
 
         private double CalculateError(double[] targets)
         {
             double e = 0;
+
             for (int i = 0; i < OutputLayer.Neurons.Count; i++)
             {
-                e = targets[i] - OutputLayer.Neurons[i].OutValue;
-                Console.WriteLine("Neuron {0}: {1}\t\t target: {2}\t\t error: {3}", i, OutputLayer.Neurons[i].OutValue, targets[i], e);
+                e =+ Math.Pow((OutputLayer.Neurons[i].OutValue - targets[i]), 2);
             }
-            Console.WriteLine();
-            return Math.Abs(e) / targets.Length;
-        } 
 
+            return 0.5 * e;
+        }
+
+        private void PrintOutputLayer(double[] targets, double layerError)
+        {
+            for (int i = 0; i < OutputLayer.Neurons.Count; i++)
+            {
+                double error = Math.Abs(OutputLayer.Neurons[i].OutValue - targets[i]);
+
+                Console.WriteLine("Neuron {0}: {1}\t\t target: {2}\t\t error: {3}"
+                    , i, OutputLayer.Neurons[i].OutValue, targets[i], error);
+            }
+            Console.WriteLine("Layer error is:{0}\n", layerError);
+        }
     }
 }

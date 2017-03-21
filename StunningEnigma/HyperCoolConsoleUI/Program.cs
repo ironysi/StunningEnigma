@@ -17,7 +17,7 @@ namespace HyperCoolConsoleUI
                 Console.WriteLine("Please select which Neural Network you want to run.\n");
                 Console.WriteLine("1.\tIris NN");
                 Console.WriteLine("2.\tBreast Cancer NN");
-                Console.WriteLine("3.\tAND Gate");
+                Console.WriteLine("3.\tXOR Gate");
                 Console.WriteLine("4.\tWine NN");
                 Console.WriteLine("5.\tIris Grid Search NN");
 
@@ -39,7 +39,6 @@ namespace HyperCoolConsoleUI
                         p.RunWine(0.001, 0.1);
                         break;
                     case 5:
-
                         // p.GridSearch(new int[] { 8, 16, 32, 64 }, new double[] { 0.1, 0.01, 0.001 });
                         break;
                     case 6:
@@ -69,9 +68,10 @@ namespace HyperCoolConsoleUI
             // Output data (quality is 6 numbers)
             Data data = new Data("winequality-red.csv", ';', 11, 6, 0.8, categories);
             // batchsize: 8 and LR: 0.1 
-            NeuralNet net = new NeuralNet(11, 14, 6, data.GetLearningInputs(), data.GetLearningOutputs());
+            NeuralNet net = new NeuralNet(11, 14, 6);
 
-            net.Train();
+            net.Train(8);
+
         }
 
 
@@ -91,9 +91,15 @@ namespace HyperCoolConsoleUI
 
             // batchsize: 8 and LR: 0.1 
 
-            NeuralNet net = new NeuralNet(30, 30, 1, data.GetLearningInputs(), data.GetLearningOutputs());
+            NeuralNet net = new NeuralNet(30, 30, 1);
+            net.LearningRate = 0.00001;
+            net.Momentum = 0.03;
 
-            net.Train();
+            net = SetData(net, data);
+
+            net.Train(8);
+            net.Test();
+            
         }
         private void RunIris(double desiredErrorPercentage, double learningRate = 0.1, bool doYouWantToPrint = false)
         {
@@ -101,13 +107,60 @@ namespace HyperCoolConsoleUI
             Data data = new Data("Iris.txt", ',', 4, 3, 0.8, categories);
 
             // batchsize: 16 and LR: 0.1 
-            NeuralNet net = new NeuralNet(4, 3, 3, data.GetLearningInputs(), data.GetLearningOutputs());
-            net.BiasSize = 1;
-            net.LearningRate = 0.1;
-            net.Momentum = 0.3;
-            net.Train();
+            NeuralNet net = new NeuralNet(4, 3, 3);
 
+            net.BiasSize = 2;
+            net.LearningRate = learningRate;
+            net.Momentum = 0.8;
+
+            net = SetData(net, data);
+
+            net.Train(16);
+            net.Test();
         }
+
+
+        private void RunANDGate(double desiredErrorPercentage, double learningRate = 0.1, bool doYouWantToPrint = false)
+        {
+
+            double[][] input = new double[4][];
+            input[0] = new double[] { 0, 0 };
+            input[1] = new double[] { 1, 1 };
+            input[2] = new double[] { 1, 0 };
+            input[3] = new double[] { 0, 1 };
+
+            double[][] output = new double[4][];
+            output[0] = new double[] { 1 };
+            output[1] = new double[] { 1 };
+            output[2] = new double[] { 0 };
+            output[3] = new double[] { 0 };
+
+            NeuralNet net = new NeuralNet(2, 2, 1);
+            net.LearningRate = 0.2;
+            net.Momentum = 0.3;
+            net.BiasSize = 2;
+
+            net.TrainingInputs = input;
+            net.TrainingOutputs = output;
+
+            net.TestingInputs = input;
+            net.TestingOutputs = output;
+
+            net.Train(4);
+            net.Test();
+        }
+
+        private NeuralNet SetData(NeuralNet net, Data data)
+        {
+            net.TrainingInputs = data.GetLearningInputs();
+            net.TrainingOutputs = data.GetLearningOutputs();
+
+            net.TestingInputs = data.GetTestingInputs();
+            net.TestingOutputs = data.GetTestingOutputs();
+
+            return net;
+        }
+
 
         //private void GridSearch(int[] batchSizes, double[] learningRates)
         //{
@@ -128,29 +181,5 @@ namespace HyperCoolConsoleUI
         //        }
         //    }
         //}
-        private void RunANDGate(double desiredErrorPercentage, double learningRate = 0.1, bool doYouWantToPrint = false)
-        {
-            string[] categories = { "numeric", "numeric", "numeric" };
-            Data data = new Data("AND.txt", ',', 2, 1, 0.8, categories);
-
-            double[][] input = new double[4][];
-            input[0] = new double[] { 0, 0 };
-            input[1] = new double[] { 1, 1 };
-            input[2] = new double[] { 1, 0 };
-            input[3] = new double[] { 0, 1 };
-
-            double[][] output = new double[4][];
-            output[0] = new double[] { 1 };
-            output[1] = new double[] { 1 };
-            output[2] = new double[] { 0 };
-            output[3] = new double[] { 0 };
-
-            NeuralNet net = new NeuralNet(2, 2, 1, input, output);
-            net.LearningRate = 0.1;
-            net.Momentum = 0.9;
-            net.BiasSize = 5;
-
-            net.Train();
-        }
     }
 }

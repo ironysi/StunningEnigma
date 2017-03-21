@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StunningEnigma.Network;
 
 namespace StunningEnigma.NetworkLogic
@@ -22,8 +19,8 @@ namespace StunningEnigma.NetworkLogic
             foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
                 CalculateGradient(neuron);
-               // PerformGradientCheck(neuron);
-                UpdateWeights(neuron, learningRate, momentum);
+             //   PerformGradientCheck(neuron);
+                GradientDescent(neuron, learningRate, momentum);
             }
         }
 
@@ -32,32 +29,57 @@ namespace StunningEnigma.NetworkLogic
             for (int i = 0; i < layer.Neurons.Count; i++)
             {
                 CalculateGradient((Neuron)layer.Neurons[i], outputs[i]);
-           //     PerformGradientCheck((Neuron)layer.Neurons[i]);
-                UpdateWeights((Neuron)layer.Neurons[i], learningRate, momentum);
+              //  PerformGradientCheck((Neuron)layer.Neurons[i]);
+                GradientDescent((Neuron)layer.Neurons[i], learningRate, momentum);
             }
         }
 
-        private static void UpdateWeights(Neuron neuron, double learningRate, double momentum)
+
+        /// <summary>
+        /// Update weights / learning method
+        /// </summary>
+        private static void GradientDescent(Neuron neuron, double learningRate, double momentum)
         {
             double previosError = neuron.Error;
-            neuron.Error = learningRate * neuron.Gradient;
 
             foreach (Synapse synapse in neuron.InputSynapses)
             {
-                previosError = synapse.Delta;
+                //previosError = synapse.Delta;
                 synapse.Delta = learningRate * neuron.Gradient * synapse.InputNeuron.OutValue; // calculate error delta for particular synapse
                 synapse.Weight += synapse.Delta + momentum * previosError; // changes weight of that synapse based on error
             }
         }
+
+        private static void VanillaGradientDescent(Neuron neuron, double learningRate)
+        {
+            foreach (Synapse synapse in neuron.InputSynapses)
+            {
+                double update = learningRate * neuron.Gradient;
+                synapse.Weight = synapse.Weight - update;
+            }
+        }
+
+        private static void GradientDescentMomentum(Neuron neuron, double learningRate, double momentum)
+        {
+
+        }
+
+        private static void ADAM(Neuron neuron)
+        {
+
+        }
+
 
         #region Gradient Descent 
 
         private static void CalculateGradient(Neuron neuron, double? target = null)
         {
             if (target == null)
-                neuron.Gradient = neuron.OutputSynapses.Sum(a => a.OutputNeuron.Gradient * a.Weight) * Utilities.SigmoidDerivative(neuron.OutValue); //Hidden neurons
+                neuron.Gradient = neuron.OutputSynapses.Sum(a => a.Delta * a.Weight)
+                    * Utilities.SigmoidDerivative(neuron.OutValue); //Hidden neurons
             else
-                neuron.Gradient = CalculateError(target.Value, neuron) * Utilities.SigmoidDerivative(neuron.OutValue); //output neurons
+                neuron.Gradient = CalculateError(target.Value, neuron)
+                    * Utilities.SigmoidDerivative(neuron.OutValue); //output neurons
         }
 
         private static double CalculateError(double targetValue, Neuron neuron)

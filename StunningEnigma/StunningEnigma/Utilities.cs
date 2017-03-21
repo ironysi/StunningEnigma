@@ -47,7 +47,10 @@ namespace StunningEnigma
         {
             return (Math.Exp(2 * value) - 1) / (Math.Exp(2 * value) + 1);
         }
-
+        public static double BipolarSigmoidDerivative(double value)
+        {
+            return BipolarSigmoid(value) * (1.0D - BipolarSigmoid(value));
+        }
         /// <summary>
         /// Random double between two numbers
         /// </summary>
