@@ -44,7 +44,6 @@ namespace StunningEnigma.NetworkLogic
 
             foreach (Synapse synapse in neuron.InputSynapses)
             {
-                //previosError = synapse.Delta;
                 synapse.Delta = learningRate * neuron.Gradient * synapse.InputNeuron.OutValue; // calculate error delta for particular synapse
                 synapse.Weight += synapse.Delta + momentum * previosError; // changes weight of that synapse based on error
             }
