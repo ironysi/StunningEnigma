@@ -27,6 +27,12 @@ namespace StunningEnigma.NetworkLogic
 
                 neuron.InputSynapses.ForEach(y => ChangeWeight(y, learningRate, momentum)); //changes weigths 
             }
+
+            foreach (Neuron neuron in layer.Neurons.OfType<Neuron>()) // batch update
+            {
+                neuron.Update();
+            }
+
         }
 
         private static void BackpropForOutputLayer(INeuralLayer layer, double[] outputs, double learningRate, double momentum)
@@ -39,8 +45,12 @@ namespace StunningEnigma.NetworkLogic
 
                 neuron.InputSynapses.ForEach(CalculateGradient);
                 neuron.InputSynapses.ForEach(y => ChangeWeight(y, learningRate, momentum));
-
                 //neuron.InputSynapses.ForEach(PerformGradientCheck);
+            }
+
+            foreach (Neuron neuron in layer.Neurons.OfType<Neuron>()) // batch update
+            {
+                neuron.Update();
             }
         }
 
@@ -50,7 +60,7 @@ namespace StunningEnigma.NetworkLogic
             double adjustment = (learningRate * synapse.Gradient) + (momentum * synapse.PreviousWeightChange);
             synapse.PreviousWeightChange = adjustment;
 
-            synapse.Weight = synapse.Weight + adjustment;
+            synapse.NewWeight = synapse.Weight + adjustment;
         }
 
 

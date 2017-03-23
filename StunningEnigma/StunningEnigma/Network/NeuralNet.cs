@@ -20,7 +20,6 @@ namespace StunningEnigma.Network
         public double[][] TestingInputs { get; set; }
         public double[][] TestingOutputs { get; set; }
 
-        private int _batchSize;
 
         public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount)
         {
@@ -31,7 +30,6 @@ namespace StunningEnigma.Network
 
         public void Train(int batchSize)
         {
-            _batchSize = batchSize;
             double[][] inputs = CreateBatch(TrainingInputs, batchSize);
             double[][] outputs = CreateBatch(TrainingOutputs, batchSize);
 

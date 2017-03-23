@@ -13,6 +13,7 @@
         public Neuron OutputNeuron { get; set; }
 
         public double Weight { get; set; }
+        public double NewWeight { get; set; }
         public double Gradient { get; set; }
         public double PreviousWeightChange { get; set; }
 
@@ -24,5 +25,9 @@
             PreviousWeightChange = 0;
         }
 
+        public void Update()
+        {
+            Weight = NewWeight;
+        }
     }
 }

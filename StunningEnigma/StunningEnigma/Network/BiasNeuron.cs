@@ -7,7 +7,6 @@ namespace StunningEnigma.Network
     class BiasNeuron:INeuron
     {
         public double OutValue { get; set; }
-        public int NeuronId { get; set; }
 
         public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
 
@@ -27,5 +26,6 @@ namespace StunningEnigma.Network
         {
             OutValue = OutValue;
         }
+
     }
 }

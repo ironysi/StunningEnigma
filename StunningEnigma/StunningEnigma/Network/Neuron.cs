@@ -8,7 +8,6 @@ namespace StunningEnigma.Network
     {
         public List<Synapse> InputSynapses { get; set; } = new List<Synapse>();
         public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
-        public int NeuronId { get; set; }
         public double OutValue { get; set; }
         public double NetValue { get; set; }
         public double Delta { get; set; }
@@ -28,6 +27,14 @@ namespace StunningEnigma.Network
                                                          // -->> therefore I never have to initialize output synapses
 
                 InputSynapses.Add(synapse); // creates input synapse for my neuron
+            }
+        }
+
+        public void Update()
+        {
+            foreach (Synapse synapse in InputSynapses)
+            {
+                synapse.Update();
             }
         }
 

@@ -11,7 +11,6 @@ namespace StunningEnigma
     {
         void ActivationFunction();
         double OutValue { get; set; }
-        int NeuronId { get; set; }
 
         List<Synapse> OutputSynapses { get; set; }
     }
