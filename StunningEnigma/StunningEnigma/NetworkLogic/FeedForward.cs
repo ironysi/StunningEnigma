@@ -26,8 +26,9 @@ namespace StunningEnigma.NetworkLogic
 
         private static void FeedLayer(INeuralLayer layer)
         {
-            foreach (INeuron neuron in layer.Neurons)
+            foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
+                neuron.CalculateNetValue();
                 neuron.ActivationFunction();
             }
         }

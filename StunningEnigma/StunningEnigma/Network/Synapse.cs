@@ -13,13 +13,15 @@
         public Neuron OutputNeuron { get; set; }
 
         public double Weight { get; set; }
-        public double Delta { get; set; }
+        public double Gradient { get; set; }
+        public double PreviousWeightChange { get; set; }
 
         public Synapse(double weight, INeuron inputNeuron, Neuron outputNeuron)
         {
             Weight = weight;
             InputNeuron = inputNeuron;
             OutputNeuron = outputNeuron;
+            PreviousWeightChange = 0;
         }
 
     }

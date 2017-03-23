@@ -70,8 +70,13 @@ namespace HyperCoolConsoleUI
             // batchsize: 8 and LR: 0.1 
             NeuralNet net = new NeuralNet(11, 14, 6);
 
-            net.Train(8);
+            net.Momentum = 0.7;
+            net.LearningRate = 0.1;
 
+            SetData(net, data);
+
+            net.Train(8);
+            net.Test();
         }
 
 
@@ -92,8 +97,8 @@ namespace HyperCoolConsoleUI
             // batchsize: 8 and LR: 0.1 
 
             NeuralNet net = new NeuralNet(30, 30, 1);
-            net.LearningRate = 0.00001;
-            net.Momentum = 0.03;
+            net.LearningRate = 0.1;
+            net.Momentum = 0.3;
 
             net = SetData(net, data);
 
@@ -110,8 +115,8 @@ namespace HyperCoolConsoleUI
             NeuralNet net = new NeuralNet(4, 3, 3);
 
             net.BiasSize = 2;
-            net.LearningRate = learningRate;
-            net.Momentum = 0.8;
+            net.LearningRate = 0.1;
+            net.Momentum = 0.5;
 
             net = SetData(net, data);
 
@@ -136,9 +141,9 @@ namespace HyperCoolConsoleUI
             output[3] = new double[] { 0 };
 
             NeuralNet net = new NeuralNet(2, 2, 1);
-            net.LearningRate = 0.2;
-            net.Momentum = 0.3;
-            net.BiasSize = 2;
+            net.LearningRate = 0.4;
+            net.Momentum = 0.9;
+            net.BiasSize = 6;
 
             net.TrainingInputs = input;
             net.TrainingOutputs = output;

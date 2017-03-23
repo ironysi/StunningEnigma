@@ -87,6 +87,7 @@ namespace StunningEnigma.Network
             return 0.5 * e;
         }
 
+
         private void PrintOutputLayer(double[] targets, double layerError)
         {
             for (int i = 0; i < OutputLayer.Neurons.Count; i++)

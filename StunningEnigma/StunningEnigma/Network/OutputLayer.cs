@@ -16,11 +16,9 @@ namespace StunningEnigma.Network
 
         private void InitializeNeurons(int nrOfNeurons, INeuralLayer previousLayer)
         {
-            Random rnd = new Random();
-
             for (int i = 0; i < nrOfNeurons; i++)
             {
-                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1), previousLayer.Neurons);
+                Neuron neuron = new Neuron(Utilities.DoubleBetween(-1, 1, 42), previousLayer.Neurons);
                 Neurons.Add(neuron);
             }
         }

@@ -17,7 +17,7 @@ namespace StunningEnigma.Network
 
             foreach (INeuron inputNeuron in inputNeurons.OfType<Neuron>())
             {
-                Synapse synapse = new Synapse(Utilities.DoubleBetween(0, 1), this, (Neuron)inputNeuron);
+                Synapse synapse = new Synapse(Utilities.DoubleBetween(-1, 1, 42), this, (Neuron)inputNeuron);
 
                 inputNeuron.OutputSynapses.Add(synapse); // creates output synapse for input neuron 
                                                          // -->> therefore I never have to initialize output synapses
