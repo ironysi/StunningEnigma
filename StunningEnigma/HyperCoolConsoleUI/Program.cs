@@ -68,9 +68,9 @@ namespace HyperCoolConsoleUI
             // Output data (quality is 6 numbers)
             Data data = new Data("winequality-red.csv", ';', 11, 6, 0.8, categories);
             // batchsize: 8 and LR: 0.1 
-            NeuralNet net = new NeuralNet(11, 14, 6);
+            NeuralNet net = new NeuralNet(11, 19, 6);
 
-            net.Momentum = 0.7;
+            net.Momentum = 0.9;
             net.LearningRate = 0.1;
 
             SetData(net, data);
@@ -96,16 +96,16 @@ namespace HyperCoolConsoleUI
 
             // batchsize: 8 and LR: 0.1 
 
-            NeuralNet net = new NeuralNet(30, 30, 1);
+            NeuralNet net = new NeuralNet(30, 35, 1);
             net.LearningRate = 0.1;
-            net.Momentum = 0.3;
+            net.Momentum = 0.9;
 
             net = SetData(net, data);
 
             net.Train(8);
             net.Test();
-            
         }
+
         private void RunIris(double desiredErrorPercentage, double learningRate = 0.1, bool doYouWantToPrint = false)
         {
             string[] categories = { "numeric", "numeric", "numeric", "numeric", "categorical" };
@@ -114,9 +114,9 @@ namespace HyperCoolConsoleUI
             // batchsize: 16 and LR: 0.1 
             NeuralNet net = new NeuralNet(4, 3, 3);
 
-            net.BiasSize = 2;
+            net.BiasSize = 1;
             net.LearningRate = 0.1;
-            net.Momentum = 0.5;
+            net.Momentum = 0.9;
 
             net = SetData(net, data);
 

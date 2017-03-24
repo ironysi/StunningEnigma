@@ -30,11 +30,11 @@ namespace StunningEnigma.Network
 
         public void Train(int batchSize)
         {
-            double[][] inputs = CreateBatch(TrainingInputs, batchSize);
-            double[][] outputs = CreateBatch(TrainingOutputs, batchSize);
-
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
             {
+                double[][] inputs = CreateBatch(TrainingInputs, batchSize);
+                double[][] outputs = CreateBatch(TrainingOutputs, batchSize);
+
                 for (int j = 0; j < batchSize; j++)
                 {
                     FeedForward.FeedForwardPropagation(this, inputs[j]);
@@ -54,7 +54,7 @@ namespace StunningEnigma.Network
 
                 PrintOutputLayer(TestingOutputs[j], CalculateError(TestingOutputs[j]));
             }
-            
+
             Console.ReadLine();
         }
 
@@ -79,7 +79,7 @@ namespace StunningEnigma.Network
 
             for (int i = 0; i < OutputLayer.Neurons.Count; i++)
             {
-                e =+ Math.Pow((OutputLayer.Neurons[i].OutValue - targets[i]), 2);
+                e = +Math.Pow((OutputLayer.Neurons[i].OutValue - targets[i]), 2);
             }
 
             return 0.5 * e;

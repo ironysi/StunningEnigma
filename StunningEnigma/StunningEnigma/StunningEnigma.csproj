@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkLogic\ADAM.cs" />
     <Compile Include="NetworkLogic\Backpropagation.cs" />
     <Compile Include="NetworkLogic\FeedForward.cs" />
     <Compile Include="Network\HiddenLayer.cs" />
