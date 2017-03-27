@@ -8,7 +8,7 @@ namespace StunningEnigma.Network
     public class NeuralNet
     {
         public INeuralLayer InputLayer { get; set; }
-        public INeuralLayer HiddenLayer { get; set; } // possibly more hidden layers 
+        public INeuralLayer HiddenLayer { get; set; } 
         public INeuralLayer DropoutLayer { get; set; }
         public INeuralLayer OutputLayer { get; set; }
         public double Momentum { get; set; }
@@ -57,7 +57,7 @@ namespace StunningEnigma.Network
 
                 for (int j = 0; j < batchSize; j++)
                 {
-                    FeedForward.FeedForwardPropagation(this, inputs[j]);
+                    FeedForward.FeedForwardPropagation(this, inputs[j], true);
                     Backpropagation.BackProp(this, outputs[j]);
                     //ADAM.BackProp(this, outputs[j]);
                 }

@@ -6,13 +6,22 @@ namespace StunningEnigma.NetworkLogic
 {
     public static class FeedForward
     {
-        public static void FeedForwardPropagation(NeuralNet neuralNet, double[] inputs)
+        public static void FeedForwardPropagation(NeuralNet neuralNet, double[] inputs, bool dropOutNeurons = false)
         {
             FeedInput(neuralNet.InputLayer, inputs);
             FeedLayer(neuralNet.HiddenLayer);
-          //  SetDropToFalse(neuralNet.DropoutLayer); //set all neurons back to normal state
-          //  DropNeurons(neuralNet.DropoutLayer); //drop neurons
-          //  FeedLayer(neuralNet.DropoutLayer);
+
+            if (neuralNet.DropoutLayer != null && dropOutNeurons == true)
+            {
+                SetDropToFalse(neuralNet.DropoutLayer); //set all neurons back to normal state
+                DropNeurons(neuralNet.DropoutLayer); //drop neurons
+            }
+
+            if (neuralNet.DropoutLayer != null)
+            {
+                FeedLayer(neuralNet.DropoutLayer);
+            }
+
             FeedLayer(neuralNet.OutputLayer);
         }
 
@@ -42,7 +51,7 @@ namespace StunningEnigma.NetworkLogic
         private static void DropNeurons(INeuralLayer layer)
         {
             double percentage = layer.Neurons.Count() - 1;
-            percentage = Math.Ceiling(percentage * 0.5);
+            percentage = Math.Ceiling(percentage * 0.25);
             Random random = new Random();
 
             for (int i = 0; i < percentage; i++)

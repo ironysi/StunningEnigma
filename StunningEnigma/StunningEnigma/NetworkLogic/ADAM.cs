@@ -19,6 +19,7 @@ namespace StunningEnigma.NetworkLogic
         public static void BackProp(NeuralNet net, double[] targetOutputs)
         {
             BackpropOutputLayer(net.OutputLayer, targetOutputs);
+            BackpropHiddenLayer(net.DropoutLayer);
             BackpropHiddenLayer(net.HiddenLayer);
         }
 

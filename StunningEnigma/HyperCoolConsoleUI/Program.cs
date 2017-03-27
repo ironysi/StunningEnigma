@@ -75,7 +75,7 @@ namespace HyperCoolConsoleUI
 
             SetData(net, data);
 
-            net.Train(8);
+            net.Train(32);
             net.Test();
         }
 
@@ -112,7 +112,7 @@ namespace HyperCoolConsoleUI
             Data data = new Data("Iris.txt", ',', 4, 3, 0.8, categories);
 
             // batchsize: 16 and LR: 0.1 
-            NeuralNet net = new NeuralNet(4, 3, 3);
+            NeuralNet net = new NeuralNet(4, 3, 7, 3);
 
             net.LearningRate = 0.1;
             net.Momentum = 0.9;
@@ -139,7 +139,7 @@ namespace HyperCoolConsoleUI
             output[2] = new double[] { 0 };
             output[3] = new double[] { 0 };
 
-            NeuralNet net = new NeuralNet(2, 4, 6, 1, 5);
+            NeuralNet net = new NeuralNet(2, 2, 4, 1);
             net.LearningRate = 0.4;
             net.Momentum = 0.9;
             net.BiasSize = 6;
