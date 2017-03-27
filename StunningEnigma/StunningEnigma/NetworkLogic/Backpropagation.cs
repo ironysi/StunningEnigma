@@ -19,13 +19,16 @@ namespace StunningEnigma.NetworkLogic
             //loops thru all neurons except BIAS 
             foreach (Neuron neuron in layer.Neurons.OfType<Neuron>())
             {
-                CalculateDelta(neuron);                          // calculates "delta" error of neuron
+                if (neuron.IsDropped == false)
+                {
+                    CalculateDelta(neuron);                          // calculates "delta" error of neuron
 
-                neuron.InputSynapses.ForEach(CalculateGradient); // calculates gradients for all input synapses
+                    neuron.InputSynapses.ForEach(CalculateGradient); // calculates gradients for all input synapses
 
-                //neuron.InputSynapses.ForEach(PerformGradientCheck);
+                    //neuron.InputSynapses.ForEach(PerformGradientCheck);
 
-                neuron.InputSynapses.ForEach(y => ChangeWeight(y, learningRate, momentum)); //changes weigths 
+                    neuron.InputSynapses.ForEach(y => ChangeWeight(y, learningRate, momentum)); //changes weigths 
+                }
             }
 
             foreach (Neuron neuron in layer.Neurons.OfType<Neuron>()) // batch update

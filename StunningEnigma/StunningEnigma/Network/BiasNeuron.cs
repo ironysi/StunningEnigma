@@ -10,13 +10,13 @@ namespace StunningEnigma.Network
 
         public List<Synapse> OutputSynapses { get; set; } = new List<Synapse>();
 
-        public BiasNeuron(List<INeuron> inputNeurons, double BiasSize)
+        public BiasNeuron(List<INeuron> inputNeurons, double biasSize)
         {
-            OutValue = BiasSize;
+            OutValue = biasSize;
 
             foreach (INeuron inputNeuron in inputNeurons.OfType<Neuron>())
             {
-                Synapse synapse = new Synapse(Utilities.DoubleBetween(-1, 1, 42), this, (Neuron)inputNeuron);
+                Synapse synapse = new Synapse(Utilities.DoubleBetween(0, 1, 42), this, (Neuron)inputNeuron);
 
                 inputNeuron.OutputSynapses.Add(synapse); // creates output synapse for input neuron 
                                                          // -->> therefore I never have to initialize output synapses

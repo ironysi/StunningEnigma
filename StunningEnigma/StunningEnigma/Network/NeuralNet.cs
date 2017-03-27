@@ -9,10 +9,18 @@ namespace StunningEnigma.Network
     {
         public INeuralLayer InputLayer { get; set; }
         public INeuralLayer HiddenLayer { get; set; } // possibly more hidden layers 
+        public INeuralLayer DropoutLayer { get; set; }
         public INeuralLayer OutputLayer { get; set; }
         public double Momentum { get; set; }
         public double LearningRate { get; set; }
         public double BiasSize { get; set; }
+
+        private struct MiniBatch
+        {
+            public double[][] inputs;
+            public double[][] outputs;
+            public int batchSize;
+        }
 
         public double[][] TrainingInputs { get; set; }
         public double[][] TrainingOutputs { get; set; }
@@ -21,24 +29,37 @@ namespace StunningEnigma.Network
         public double[][] TestingOutputs { get; set; }
 
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount)
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int dropoutLayerCount, int outputNeuronsCount, double biasSize = 1)
         {
+            BiasSize = biasSize;
             InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
             HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, BiasSize);
+            DropoutLayer = new HiddenLayer(dropoutLayerCount, true, HiddenLayer, BiasSize);
+            OutputLayer = new OutputLayer(outputNeuronsCount, DropoutLayer);
+        }
+
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, double biasSize = 1)
+        {
+            BiasSize = biasSize;
+            InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
+            HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, BiasSize);          
             OutputLayer = new OutputLayer(outputNeuronsCount, HiddenLayer);
         }
 
         public void Train(int batchSize)
         {
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
-                double[][] inputs = CreateBatch(TrainingInputs, batchSize);
-                double[][] outputs = CreateBatch(TrainingOutputs, batchSize);
+                MiniBatch batch = CreateBatch(TrainingInputs, TrainingOutputs, batchSize);
+
+                double[][] inputs = batch.inputs;
+                double[][] outputs = batch.outputs;
 
                 for (int j = 0; j < batchSize; j++)
                 {
                     FeedForward.FeedForwardPropagation(this, inputs[j]);
                     Backpropagation.BackProp(this, outputs[j]);
+                    //ADAM.BackProp(this, outputs[j]);
                 }
             }
         }
@@ -51,25 +72,31 @@ namespace StunningEnigma.Network
             {
                 FeedForward.FeedForwardPropagation(this, TestingInputs[j]);
                 Backpropagation.BackProp(this, TestingOutputs[j]);
-
+                //ADAM.BackProp(this, TestingOutputs[j]);
                 PrintOutputLayer(TestingOutputs[j], CalculateError(TestingOutputs[j]));
             }
 
             Console.ReadLine();
         }
 
-        private double[][] CreateBatch(double[][] data, int batchSize)
+        private static MiniBatch CreateBatch(double[][] inputs, double[][] outputs, int batchSize)
         {
             Random rnd = new Random();
-            double[][] returnData = new double[batchSize][];
+
+            MiniBatch batch = new MiniBatch();
+            batch.inputs = new double[batchSize][];
+            batch.outputs = new double[batchSize][];
+            batch.batchSize = batchSize;
 
             for (int i = 0; i < batchSize; i++)
             {
-                int randomNumber = rnd.Next(0, data.Length);
-                returnData[i] = data[randomNumber];
+                int randomNumber = rnd.Next(0, batch.batchSize);
+
+                batch.inputs[i] = inputs[randomNumber];
+                batch.outputs[i] = outputs[randomNumber];
             }
 
-            return returnData;
+            return batch;
         }
 
 

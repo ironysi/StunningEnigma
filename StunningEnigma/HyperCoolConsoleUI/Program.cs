@@ -68,7 +68,7 @@ namespace HyperCoolConsoleUI
             // Output data (quality is 6 numbers)
             Data data = new Data("winequality-red.csv", ';', 11, 6, 0.8, categories);
             // batchsize: 8 and LR: 0.1 
-            NeuralNet net = new NeuralNet(11, 19, 6);
+            NeuralNet net = new NeuralNet(11, 11, 16, 6, 1);
 
             net.Momentum = 0.9;
             net.LearningRate = 0.1;
@@ -96,7 +96,7 @@ namespace HyperCoolConsoleUI
 
             // batchsize: 8 and LR: 0.1 
 
-            NeuralNet net = new NeuralNet(30, 35, 1);
+            NeuralNet net = new NeuralNet(30, 35, 40, 1, 1);
             net.LearningRate = 0.1;
             net.Momentum = 0.9;
 
@@ -114,7 +114,6 @@ namespace HyperCoolConsoleUI
             // batchsize: 16 and LR: 0.1 
             NeuralNet net = new NeuralNet(4, 3, 3);
 
-            net.BiasSize = 1;
             net.LearningRate = 0.1;
             net.Momentum = 0.9;
 
@@ -140,7 +139,7 @@ namespace HyperCoolConsoleUI
             output[2] = new double[] { 0 };
             output[3] = new double[] { 0 };
 
-            NeuralNet net = new NeuralNet(2, 2, 1);
+            NeuralNet net = new NeuralNet(2, 4, 6, 1, 5);
             net.LearningRate = 0.4;
             net.Momentum = 0.9;
             net.BiasSize = 6;

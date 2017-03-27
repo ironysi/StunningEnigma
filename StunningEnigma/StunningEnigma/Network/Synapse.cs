@@ -16,6 +16,8 @@
         public double NewWeight { get; set; }
         public double Gradient { get; set; }
         public double PreviousWeightChange { get; set; }
+        public double PrevM { get; set; }
+        public double PrevV { get; set; }
 
         public Synapse(double weight, INeuron inputNeuron, Neuron outputNeuron)
         {
@@ -23,6 +25,8 @@
             InputNeuron = inputNeuron;
             OutputNeuron = outputNeuron;
             PreviousWeightChange = 0;
+            PrevM = 0;
+            PrevV = 0;
         }
 
         public void Update()

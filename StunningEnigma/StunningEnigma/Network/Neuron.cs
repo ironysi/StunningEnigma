@@ -11,6 +11,7 @@ namespace StunningEnigma.Network
         public double OutValue { get; set; }
         public double NetValue { get; set; }
         public double Delta { get; set; }
+        public bool IsDropped { get; set; }
 
 
         public Neuron(double outValue)
@@ -21,7 +22,7 @@ namespace StunningEnigma.Network
         {
             foreach (INeuron inputNeuron in inputNeurons)
             {
-                Synapse synapse = new Synapse(Utilities.DoubleBetween(-1,1, 42), inputNeuron, this);
+                Synapse synapse = new Synapse(Utilities.DoubleBetween(0,1, 42), inputNeuron, this);
 
                 inputNeuron.OutputSynapses.Add(synapse); // creates output synapse for input neuron 
                                                          // -->> therefore I never have to initialize output synapses

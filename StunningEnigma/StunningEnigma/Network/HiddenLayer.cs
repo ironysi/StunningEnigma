@@ -25,7 +25,7 @@ namespace StunningEnigma.Network
             for (int i = 0; i < nrOfNeurons; i++)
             {
                 
-                Neuron neuron = new Neuron(Utilities.DoubleBetween(-1, 1, 42), inputLayer.Neurons);
+                Neuron neuron = new Neuron(Utilities.DoubleBetween(0, 1, 42), inputLayer.Neurons);
                 Neurons.Add(neuron);
             }
         }
