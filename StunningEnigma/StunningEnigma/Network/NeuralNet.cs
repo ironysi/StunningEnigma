@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using StunningEnigma.NetworkLogic;
 
 namespace StunningEnigma.Network
@@ -8,7 +6,7 @@ namespace StunningEnigma.Network
     public class NeuralNet
     {
         public INeuralLayer InputLayer { get; set; }
-        public INeuralLayer HiddenLayer { get; set; } 
+        public INeuralLayer HiddenLayer { get; set; }
         public INeuralLayer DropoutLayer { get; set; }
         public INeuralLayer OutputLayer { get; set; }
         public double Momentum { get; set; }
@@ -29,21 +27,43 @@ namespace StunningEnigma.Network
         public double[][] TestingOutputs { get; set; }
 
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int dropoutLayerCount, int outputNeuronsCount, double biasSize = 1)
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int dropoutLayerCount, int outputNeuronsCount, bool negative, double biasSize = 1)
         {
             BiasSize = biasSize;
-            InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
-            HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, BiasSize);
-            DropoutLayer = new HiddenLayer(dropoutLayerCount, true, HiddenLayer, BiasSize);
-            OutputLayer = new OutputLayer(outputNeuronsCount, DropoutLayer);
+
+            if (negative)
+            {
+                InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
+                HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, negative, BiasSize);
+                DropoutLayer = new HiddenLayer(dropoutLayerCount, true, HiddenLayer, negative, BiasSize);
+                OutputLayer = new OutputLayer(outputNeuronsCount, DropoutLayer, negative);
+            }
+            else
+            {
+                InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
+                HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, negative, BiasSize);
+                DropoutLayer = new HiddenLayer(dropoutLayerCount, true, HiddenLayer, negative, BiasSize);
+                OutputLayer = new OutputLayer(outputNeuronsCount, DropoutLayer, negative);
+            }
         }
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, double biasSize = 1)
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, double biasSize = 1, bool negative = false)
         {
             BiasSize = biasSize;
-            InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
-            HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, BiasSize);          
-            OutputLayer = new OutputLayer(outputNeuronsCount, HiddenLayer);
+
+            if (negative)
+            {
+                InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
+                HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, negative, BiasSize);
+                OutputLayer = new OutputLayer(outputNeuronsCount, HiddenLayer, negative);
+            }
+            else
+            {
+                InputLayer = new InputLayer(inputNeuronsCount, true, BiasSize);
+                HiddenLayer = new HiddenLayer(hiddenNeuronsCount, true, InputLayer, negative, BiasSize);
+                OutputLayer = new OutputLayer(outputNeuronsCount, HiddenLayer, negative);
+            }
+
         }
 
         public void Train(int batchSize)
@@ -122,7 +142,17 @@ namespace StunningEnigma.Network
                 Console.WriteLine("Neuron {0}: {1}\t\t target: {2}\t\t error: {3}"
                     , i, OutputLayer.Neurons[i].OutValue, targets[i], error);
             }
-            Console.WriteLine("Layer error is:{0}\n", layerError);
+            if (layerError > 0.3)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error is:{0}\n", layerError);
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+            else
+            {
+                Console.WriteLine("Error is:{0}\n", layerError);
+            }
+
         }
     }
 }

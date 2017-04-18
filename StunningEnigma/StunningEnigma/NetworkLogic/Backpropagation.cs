@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.Remoting;
+﻿using System.Linq;
 using StunningEnigma.Network;
 
 namespace StunningEnigma.NetworkLogic
@@ -15,7 +13,7 @@ namespace StunningEnigma.NetworkLogic
             {
                 BackpropForHiddenLayer(net.DropoutLayer, net.LearningRate, net.Momentum);
             }
-            
+
             BackpropForHiddenLayer(net.HiddenLayer, net.LearningRate, net.Momentum);
         }
 

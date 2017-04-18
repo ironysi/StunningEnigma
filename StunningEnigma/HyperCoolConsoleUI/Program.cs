@@ -1,6 +1,5 @@
 ﻿using System;
 using DataSet;
-using StunningEnigma;
 using StunningEnigma.Network;
 
 namespace HyperCoolConsoleUI
@@ -68,7 +67,7 @@ namespace HyperCoolConsoleUI
             // Output data (quality is 6 numbers)
             Data data = new Data("winequality-red.csv", ';', 11, 6, 0.8, categories);
             // batchsize: 8 and LR: 0.1 
-            NeuralNet net = new NeuralNet(11, 11, 16, 6, 1);
+            NeuralNet net = new NeuralNet(11, 11, 22, 6);
 
             net.Momentum = 0.9;
             net.LearningRate = 0.1;
@@ -96,7 +95,7 @@ namespace HyperCoolConsoleUI
 
             // batchsize: 8 and LR: 0.1 
 
-            NeuralNet net = new NeuralNet(30, 35, 40, 1, 1);
+            NeuralNet net = new NeuralNet(30, 35, 40, 1, true);
             net.LearningRate = 0.1;
             net.Momentum = 0.9;
 

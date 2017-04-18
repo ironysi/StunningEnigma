@@ -49,9 +49,31 @@ namespace DataSet
             _percentage = percentage;
 
             _inputs = _allData.SubMatrix(0, _allData.RowCount, 0, inputColumnsCount);
-            _outputs = _allData.SubMatrix(0, _allData.RowCount, inputColumnsCount, outputColumnsCount);
+
+            if (outputColumnsCount > 0)
+            {
+                _outputs = _allData.SubMatrix(0, _allData.RowCount, inputColumnsCount, outputColumnsCount);
+            }
+            else
+            {
+                _outputs = _allData.SubMatrix(0, _allData.RowCount, inputColumnsCount, outputColumnsCount);
+            }
+
 
             DivideIntoTestingAndTrainingSet();
+        }
+        /// <summary>
+        /// under construction
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="numberOfInputsColumns"></param>
+        /// <param name="numberOfOutputColumns"></param>
+        /// <returns></returns>
+        private double[][] getRawOutputs(string fileName,int numberOfInputsColumns, int numberOfOutputColumns)
+        {
+            double[,] rawOuts = new double[_allData.ColumnCount, numberOfOutputColumns];
+
+            return null;
         }
 
 
@@ -77,6 +99,7 @@ namespace DataSet
             allLines = allLines.OrderBy(x => rng.Next()).ToArray();
 
             string[][] lines = new string[allLines.Length][];
+
             for (int i = 0; i < allLines.Length; i++)
             {
                 lines[i] = allLines[i].Split(splitOn);

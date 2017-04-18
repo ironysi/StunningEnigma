@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StunningEnigma.Network;
 
 namespace StunningEnigma.NetworkLogic
@@ -19,7 +16,10 @@ namespace StunningEnigma.NetworkLogic
         public static void BackProp(NeuralNet net, double[] targetOutputs)
         {
             BackpropOutputLayer(net.OutputLayer, targetOutputs);
-            BackpropHiddenLayer(net.DropoutLayer);
+
+            if (net.DropoutLayer != null)
+                BackpropHiddenLayer(net.DropoutLayer);
+
             BackpropHiddenLayer(net.HiddenLayer);
         }
 
