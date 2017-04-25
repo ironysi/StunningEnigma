@@ -63,15 +63,13 @@ namespace DataSet
             DivideIntoTestingAndTrainingSet();
         }
         /// <summary>
-        /// under construction
+        /// Under construction
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="numberOfInputsColumns"></param>
-        /// <param name="numberOfOutputColumns"></param>
-        /// <returns></returns>
         private double[][] getRawOutputs(string fileName,int numberOfInputsColumns, int numberOfOutputColumns)
         {
-            double[,] rawOuts = new double[_allData.ColumnCount, numberOfOutputColumns];
+            double[,] rawOuts = new double[_allData.RowCount, numberOfOutputColumns];
+            string[] allLines = File.ReadAllLines($"../../../DataSet/Data/{fileName}");
+
 
             return null;
         }

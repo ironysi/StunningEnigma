@@ -1,6 +1,7 @@
 ﻿using System;
 using DataSet;
 using StunningEnigma.Network;
+using System.IO;
 
 namespace HyperCoolConsoleUI
 {
@@ -54,7 +55,7 @@ namespace HyperCoolConsoleUI
 
         private void Test()
         {
-            Console.WriteLine("Hello world, is that You?");
+
         }
 
         private void RunWine(double desiredErrorPercentage, double learningRate = 0.1, bool doYouWantToPrint = false)
@@ -73,6 +74,8 @@ namespace HyperCoolConsoleUI
             net.LearningRate = 0.1;
 
             SetData(net, data);
+
+           // ExportDataCSV(net);
 
             net.Train(32);
             net.Test();
@@ -164,6 +167,28 @@ namespace HyperCoolConsoleUI
             return net;
         }
 
+
+        private void ExportDataCSV(NeuralNet net)
+        {
+            string filePath = "TEST.csv";
+            string delimeter = ";";
+
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Close();
+            }
+
+            using (TextWriter writer = File.CreateText(filePath))
+            {
+                for (int index = 0; index < net.TrainingInputs.Length; index++)
+                {
+                    writer.WriteLine(string.Join(delimeter, net.TrainingInputs[index]));
+                }
+            }
+
+
+        }
 
         //private void GridSearch(int[] batchSizes, double[] learningRates)
         //{
