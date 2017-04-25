@@ -27,7 +27,7 @@ namespace StunningEnigma.Network
         public double[][] TestingOutputs { get; set; }
 
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int dropoutLayerCount, int outputNeuronsCount, bool negative, double biasSize = 1)
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int dropoutLayerCount, int outputNeuronsCount, bool negative = false, double biasSize = 1)
         {
             BiasSize = biasSize;
 
@@ -47,7 +47,7 @@ namespace StunningEnigma.Network
             }
         }
 
-        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, double biasSize = 1, bool negative = false)
+        public NeuralNet(int inputNeuronsCount, int hiddenNeuronsCount, int outputNeuronsCount, bool negative = false, double biasSize = 1)
         {
             BiasSize = biasSize;
 

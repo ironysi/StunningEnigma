@@ -43,9 +43,10 @@ namespace DataSet
         }
 
 
-        public Data(string fileName, char splitOn, int inputColumnsCount, int outputColumnsCount, double percentage, string[] columnTypes, int[] outputColumns = null, int[] ignoredColumns = null)
+        public Data(string fileName, char splitOn, int inputColumnsCount, int outputColumnsCount,
+            double percentage, string[] columnTypes, int[] outputColumns = null, int[] ignoredColumns = null)
         {
-            _allData = _fillData(columnTypes, fileName, splitOn, outputColumns, ignoredColumns);
+            _allData = _fillData(columnTypes, fileName, splitOn, outputColumns, ignoredColumns, inputColumnsCount);
             _percentage = percentage;
 
             _inputs = _allData.SubMatrix(0, _allData.RowCount, 0, inputColumnsCount);
@@ -75,12 +76,16 @@ namespace DataSet
         }
 
 
-        private Matrix<double> _fillData(string[] columnTypes, string fileName, char splitOn, int[] outputColumns, int[] ignoredColumns)
+        private Matrix<double> _fillData(string[] columnTypes, string fileName, char splitOn,
+                                         int[] outputColumns, int[] ignoredColumns, int inputsCount)
         {
             string[][] lines = _readLines(fileName, splitOn);
 
+            // OLD STANDARIZER
             standardizer = new Standardizer(lines, columnTypes, outputColumns, ignoredColumns);
             double[][] dataJaggged = standardizer.StandardizeAll(lines);
+            
+
             double[,] data = JaggedTo2DArray(dataJaggged);
             Matrix<double> result = Matrix<double>.Build.DenseOfArray(data);
             return result;
@@ -105,7 +110,6 @@ namespace DataSet
 
             return lines;
         }
-
 
         private T[,] JaggedTo2DArray<T>(T[][] source)
         {

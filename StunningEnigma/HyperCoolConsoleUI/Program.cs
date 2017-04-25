@@ -114,7 +114,7 @@ namespace HyperCoolConsoleUI
             Data data = new Data("Iris.txt", ',', 4, 3, 0.8, categories);
 
             // batchsize: 16 and LR: 0.1 
-            NeuralNet net = new NeuralNet(4, 3, 7, 3);
+            NeuralNet net = new NeuralNet(4, 3, 4, 3);
 
             net.LearningRate = 0.1;
             net.Momentum = 0.9;
